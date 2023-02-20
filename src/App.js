@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
 
 function App() {
+  const [outcome, setOutcome] = useState([]);
+  const [rank, setRank] = useState({});
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get('http://localhost:3001/api/get-countries-tags');
+      setOutcome(response.data.outcome);
+      setRank(response.data.rank);
+    }
+    fetchData();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <table>
+        <tbody>
+          {outcome.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((country, colIndex) => (
+                <td key={colIndex}>{country}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div>
+        {Object.keys(rank).map((country, index) => (
+          <div key={index}>
+            {country}: {rank[country]}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
