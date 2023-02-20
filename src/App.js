@@ -15,8 +15,8 @@ function App() {
     fetchData();
   }, []);
   return (
-    <div>
-      <table>
+    <div className='ml-96 mt-40'>
+      <table className=''>
         <tbody>
           {outcome.map((row, rowIndex) => (
             <tr key={rowIndex}>
